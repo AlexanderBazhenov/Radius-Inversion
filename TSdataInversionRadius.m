@@ -3,7 +3,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-DATA = csvread("normalised_export.csv");
+% DATA = csvread("normalised_export.csv");
 ##shotn,time,R-R_lcfs,T_e/<Te>,n_e/<ne>,I_p,B_T,Volume,W_e,l42,<n>l,elong,before sawtooth #,Upl*Ipl,NBI1,NBI2,<Te>,<ne>,R
 ##№,ms,mm,1,1,kA,T,m^3,kJ,cm,10^19 m^-3,1,№,kW,kW,kW,eV,10^19 m^-3,cm
 
@@ -14,7 +14,7 @@ nenorm = DATA (:, 5);
 BeforeSaw = DATA (:, 13);
 
 % 2025-04-28
-DATARinv = csvread("inversion radius.csv");
+% DATARinv = csvread("inversion radius.csv");
 ##"shotn,",ts_time 1,delay 1,amp1,period,ts_time 2,delay 2,amp,period,R_inv
 ##,,,,,,,,ms,
 ##43043,164.2,-0.1505,0.132153,2.943,167.3,0.1655,0.119628,2.714,493.438877755511
@@ -26,11 +26,7 @@ Time1Rinv = DATARinv (:, 2);
 Time2Rinv = DATARinv (:, 6);
 RinvPoint = DATARinv (:, 10);
 %
-figure
-hold on
-plot(Time1Rinv)
-plot(Time2Rinv)
-ylim([150 240])
+
 
 ##2.799 *308.28 = 863
 ##2.165 * 328.55 = 711
@@ -43,6 +39,12 @@ Te(ii)=  Tenorm (ii)* Temean(ii);
 end
 
 
+% 2025-04-30
+Bt = DATA (:, 7);
+Ip = DATA (:, 6);
+for ii = 1:length(DATA)
+  BtIp(ii)=  Bt (ii) / Ip(ii);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% /DATA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
