@@ -120,7 +120,13 @@ for jj = 1:length(Rover)
   JiT1T2over(jj) = out;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Rinv in R
+[maxJiT1T2over, maxJiT1T2overind] =  max(JiT1T2over)
+RinvR = Rover(maxJiT1T2overind);
+% Rinv in IR
+RinvOutInn;
+##RinvINN = infsup(Rinvoutinf, Rinvoutsup)
+##RinvOUT = infsup(Rinvinninf, Rinvinnsup)
 % 2025-05-11
 % PlotRinvOutInn
 

@@ -44,8 +44,8 @@ xlabel('Shot count, inversion radius file');
 ylabel('Time, ms');
 titlestr = strcat('Time before-after sawtooth');
 title(titlestr);
-figure_name_out=strcat(titlestr, '.png');
-print('-dpng', '-r300', figure_name_out), pwd;
+##figure_name_out=strcat(titlestr, '.png');
+##print('-dpng', '-r300', figure_name_out), pwd;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

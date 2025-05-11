@@ -5,6 +5,11 @@
 
 %  2025-05-06
 Rinvarray = NaN(length(DATARinv),1)
+for jj= 1:length(DATARinv)
+RinvOUTarray(jj) = infsup(0,0);
+RinvINNarray(jj) = infsup(0,0);
+end
+
 for shotNinv = 20%:30%length(DATARinv )
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % file "inversion radius"
@@ -68,13 +73,17 @@ Tint2 = midrad(midT2, radT2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % 2025-05-11
-FindRinvInterval
-% JiT1T2over -> PlotRinvOutInn
+FindRinvInterval;
+% JiT1T2over -> RinvOutInn
 
-
-Rinvnow = R(ShotTimeROIind1(I1(maxJi)))
+% results now
+Rinvnow = RinvR
+RinvINNnow =  RinvINN
+RinvOUTnow = RinvOUT
 %
 Rinvarray (shotNinv)= Rinvnow;
+RinvINNarray (shotNinv)= RinvINNnow;
+RinvOUTarray (shotNinv)= RinvOUTnow;
 end
 
 % / 2025-05-06
