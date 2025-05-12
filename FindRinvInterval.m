@@ -37,10 +37,39 @@ R2 = R(ShotTimeROIind2)
 [R1sort, I1sort] = sort(R1(I1))
 [R2sort, I2sort] = sort(R2(I2))
 
+if I1sort == I2sort
+  for jj = 1:length(I1)
+% jaccard Te1 Te2
+    [x1cap, x2cap]=wedge(Tint1(I1(jj)), Tint2(I2(jj)));
+    [x1cup, x2cup]=vee(Tint1(I1(jj)), Tint2(I2(jj)));
+    out=(x2cap-x1cap)/abs(x1cup-x2cup);
+    JiT1T2(jj) = out;
+  end
+  ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PLOT Jaccard index Te1, Te2
+##figure
+##hold on
+##plot(JiT1T2, 'ok')
+##% find max Ji in the middle of arrays
+[maxJiT1T2, maxJiT1T2ind] = max(JiT1T2(2:end-1))
+% maxJiT1T2ind - index in R12 cropped
+% maxJi - index in R12
+maxJi = maxJiT1T2ind + 1
+##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  R(ShotTimeROIind1(I1(maxJi))) =  R(ShotTimeROIind2(I2(maxJi)))
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rinv in R
+if maxJiT1T2 > 0
+  RinvR = R1(maxJi);
+end
+
+
 ##figure
 ##hold on
 ##plot(R1sort, midT1(I1), 'sb')
 ##plot(R2sort, midT2(I2), 'sr')
+else
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T2 < T1
 T2less = find(midT2(I2) < midT1(I1))
@@ -123,6 +152,7 @@ end
 % Rinv in R
 [maxJiT1T2over, maxJiT1T2overind] =  max(JiT1T2over)
 RinvR = Rover(maxJiT1T2overind);
+end
 % Rinv in IR
 RinvOutInn;
 ##RinvINN = infsup(Rinvoutinf, Rinvoutsup)
