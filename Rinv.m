@@ -12,12 +12,12 @@ dir2D = 'e:\Users\Public\Documents\ST\2024\T\IntLinInc2D\'
 dirRinvOut = 'e:\Users\Public\Documents\ST\2025\T\Rinv\'
 
 % HomePC
-dirnow = 'D:\ST\2025\T\'
-dirroot = 'D:\ST\2024\T\'
-dirki = 'D:\ST\2024\T\kinterval-0.0.1'
-dirData = 'D:\ST\2024\T\DRS4\'
-dir2023 =  'd:\ST\2023\T\'
-dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
+##dirnow = 'D:\ST\2025\T\'
+##dirroot = 'D:\ST\2024\T\'
+##dirki = 'D:\ST\2024\T\kinterval-0.0.1'
+##dirData = 'D:\ST\2024\T\DRS4\'
+##dir2023 =  'd:\ST\2023\T\'
+##dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
 
 % 2025-03-26
 cd(dirnow), pwd
@@ -25,7 +25,10 @@ cd(dirnow), pwd
 addpath(dirnow)
 
 % 2025-05-11
-load RinvData
+%load RinvData
+% 2025-05-12
+DATA = csvread("normalised_export.csv");
+DATARinv = csvread("inversion radius.csv");
 
 % 2025-04-28
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
