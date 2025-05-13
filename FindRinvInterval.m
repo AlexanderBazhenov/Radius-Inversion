@@ -37,6 +37,7 @@ R2 = R(ShotTimeROIind2)
 [R1sort, I1sort] = sort(R1(I1))
 [R2sort, I2sort] = sort(R2(I2))
 
+clear JiT1T2
 if I1sort == I2sort
   for jj = 1:length(I1)
 % jaccard Te1 Te2

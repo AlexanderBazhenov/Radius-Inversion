@@ -2,7 +2,7 @@
 % Radius of inversion interval
 
 %
-
+RinvDataExist
 %  2025-05-06
 Rinvarray = NaN(length(DATARinv),1)
 for jj= 1:length(DATARinv)
@@ -10,7 +10,8 @@ RinvOUTarray(jj) = infsup(0,0);
 RinvINNarray(jj) = infsup(0,0);
 end
 
-for shotNinv = 20%:30%length(DATARinv )
+for shotNinv = 26:length(DATARinv )
+  if RinvDataExist( shotNinv) == 1
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % file "inversion radius"
 % shotNinv = 14 -> shot 42354 "normalised_export.csv"
@@ -78,12 +79,13 @@ FindRinvInterval;
 
 % results now
 Rinvnow = RinvR
-RinvINNnow =  RinvINN
-RinvOUTnow = RinvOUT
+RinvINNnow =  RinvINN;
+RinvOUTnow = RinvOUT;
 %
 Rinvarray (shotNinv)= Rinvnow;
 RinvINNarray (shotNinv)= RinvINNnow;
 RinvOUTarray (shotNinv)= RinvOUTnow;
+end
 end
 
 % / 2025-05-06

@@ -10,5 +10,5 @@ Jizero2 = find(JiT1T2over >= max(JiT1T2over)/2);
 Rinvinninf = Rover(min(Jizero2));
 Rinvinnsup = Rover(max(Jizero2));
 % IR
-RinvINN = infsup(Rinvoutinf, Rinvoutsup)
-RinvOUT = infsup(Rinvinninf, Rinvinnsup)
+RinvINN = infsup(Rinvoutinf, Rinvoutsup);
+RinvOUT = infsup(Rinvinninf, Rinvinnsup);
