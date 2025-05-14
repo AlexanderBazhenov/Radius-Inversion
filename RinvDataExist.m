@@ -1,6 +1,6 @@
 % 2025-05-13
 %
-RinvDataExist = zeros(length(DATARinv),1)
+RinvDataExist = zeros(length(DATARinv),1);
 for shotNinv = 3:length(DATARinv )
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % file "inversion radius"

@@ -37,6 +37,8 @@ R2 = R(ShotTimeROIind2)
 [R1sort, I1sort] = sort(R1(I1))
 [R2sort, I2sort] = sort(R2(I2))
 
+
+
 clear JiT1T2
 if I1sort == I2sort
   for jj = 1:length(I1)
@@ -64,17 +66,64 @@ maxJi = maxJiT1T2ind + 1
 if maxJiT1T2 > 0
   RinvR = R1(maxJi);
 end
+% 2025-05-14
+T2less = find(midT2(I2) < midT1(I1))
+T2more = find(midT2(I2) > midT1(I1))
+% max Ji elimination
+T2less = setdiff(T2less, maxJi)
+T2more = setdiff(T2more, maxJi)
+%
+
+% R less more
+[R1maxT2less, R1maxT2lessInd] = max(R1sort(T2less))
+[R1minT2more, R1maxT2moreInd] = min(R1sort(T2more))
+[R2maxT2less, R2maxT2lessInd] = max(R2sort(T2less))
+[R2minT2more, R2maxT2moreInd] = min(R2sort(T2more))
+% T(R)  less more
+% less
+Rind1less =find(R(ShotTimeROIind1) == R1maxT2less)
+midT1(Rind1less)
+Rind2less =find(R(ShotTimeROIind2) == R2maxT2less)
+midT2(Rind2less)
+% more
+Rind1more =find(R(ShotTimeROIind1) == R1minT2more)
+midT1(Rind1more)
+Rind2more =find(R(ShotTimeROIind2) == R2minT2more)
+midT2(Rind2more)
+% maxJi
+Rind1Ji =find(R(ShotTimeROIind1) == R1sort(maxJi) )
+midT1(Rind1Ji)
+Rind2Ji =find(R(ShotTimeROIind2) == R1sort(maxJi) )
+midT1(Rind2Ji)
+
+figure
+hold on
+plot(R1sort, midT1(I1), 'sb')
+plot(R2sort, midT2(I2), 'sr')
+xx = [ R1(Rind1less) R1sort(maxJi) R1(Rind1more) ]
+yy = [ midT1(Rind1less) midT1(Rind1Ji) midT1(Rind1more) ]
+plot(xx, yy, '-b')
+xx = [ R2(Rind2less) R2sort(maxJi) R2(Rind2more) ]
+yy = [ midT2(Rind2less) midT2(Rind2Ji) midT2(Rind2more) ]
+plot(xx, yy, '-r')
+xlim([R2(Rind2less) R2(Rind2more)] )
+ylim( [ midT1(Rind1more)  midT1(Rind1less)  ] )
+set(gca, 'fontsize', 14)
+xlabel('R')
+ylabel('Te')
+  titlestr = strcat('Te vs R ROIover Ji >0')
+title(titlestr)
+figure_name_out=strcat(titlestr, '.png')
+print('-dpng', '-r300', figure_name_out), pwd
 
 
-##figure
-##hold on
-##plot(R1sort, midT1(I1), 'sb')
-##plot(R2sort, midT2(I2), 'sr')
 else
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T2 < T1
 T2less = find(midT2(I2) < midT1(I1))
 T2more = find(midT2(I2) > midT1(I1))
+%
+
 % R less more
 [R1maxT2less, R1maxT2lessInd] = max(R1sort(T2less))
 [R1minT2more, R1maxT2moreInd] = min(R1sort(T2more))
@@ -92,16 +141,18 @@ midT1(Rind1more)
 Rind2more =find(R(ShotTimeROIind2) == R2minT2more)
 midT2(Rind2more)
 
-##figure
-##hold on
-##plot(R1sort, midT1(I1), 'sb')
-##plot(R2sort, midT2(I2), 'sr')
-##xx = [ R1(Rind1less) R1(Rind1more) ]
-##yy = [ midT1(Rind1less) midT1(Rind1more) ]
-##plot(xx, yy, '-b')
-##xx = [ R2(Rind2less) R2(Rind2more) ]
-##yy = [ midT2(Rind2less) midT2(Rind2more) ]
-##plot(xx, yy, '-r')
+
+
+figure
+hold on
+plot(R1sort, midT1(I1), 'sb')
+plot(R2sort, midT2(I2), 'sr')
+xx = [ R1(Rind1less) R1(Rind1more) ]
+yy = [ midT1(Rind1less) midT1(Rind1more) ]
+plot(xx, yy, '-b')
+xx = [ R2(Rind2less) R2(Rind2more) ]
+yy = [ midT2(Rind2less) midT2(Rind2more) ]
+plot(xx, yy, '-r')
 
 % ROI oversampled
 stepR = 0.1

@@ -4,7 +4,7 @@
 %
 RinvDataExist
 %  2025-05-06
-Rinvarray = NaN(length(DATARinv),1)
+Rinvarray = NaN(length(DATARinv),1);
 for jj= 1:length(DATARinv)
 RinvOUTarray(jj) = infsup(0,0);
 RinvINNarray(jj) = infsup(0,0);
@@ -12,27 +12,9 @@ end
 
 for shotNinv = 26:length(DATARinv )
   if RinvDataExist( shotNinv) == 1
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% file "inversion radius"
-% shotNinv = 14 -> shot 42354 "normalised_export.csv"
-% shotNinv = 20 -> shot 42664 "normalised_export.csv"
-  ShotROI = ShotRinv(shotNinv);
-%
-  Time1 = Time1Rinv(shotNinv);
-  Time2 = Time2Rinv(shotNinv);
- %
-ShotROIstr = num2str(ShotROI)
-T1str = strcat(num2str(Time1))
-T2str = strcat(num2str(Time2))
-% /file "inversion radius"
-
-ShotROIind =find(Shot == ShotROI);
-
-TimeROI1 =find(abs(time - Time1) < timeerr);
-ShotTimeROIind1  = intersect(ShotROIind, TimeROI1);
-TimeROI2 =find(abs(time - Time2) < timeerr);
-ShotTimeROIind2  = intersect(ShotROIind, TimeROI2);
-
+##  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+PrepareTask
+% Do intervals
 midT1 = Te(ShotTimeROIind1);
 radT1 = 0.05*midT1;
 Tint1 = midrad(midT1, radT1);
