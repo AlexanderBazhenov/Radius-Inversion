@@ -4,13 +4,15 @@
 %
 RinvDataExist
 %  2025-05-06
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Rinvarray = NaN(length(DATARinv),1);
 for jj= 1:length(DATARinv)
 RinvOUTarray(jj) = infsup(0,0);
 RinvINNarray(jj) = infsup(0,0);
 end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for shotNinv = 26:length(DATARinv )
+for shotNinv = 31:length(DATARinv )
   if RinvDataExist( shotNinv) == 1
 ##  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PrepareTask
