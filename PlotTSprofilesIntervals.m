@@ -12,8 +12,13 @@ Tint2 = midrad(midT2, radT2);
 %
 figure
 hold on
-errorbar (R(ShotTimeROIind1), midT1, radT1,"~.b");
-errorbar (R(ShotTimeROIind2), midT2, radT2,"~.r");
+p1 = errorbar (R(ShotTimeROIind1), midT1, radT1,"~.b");
+p2 = errorbar (R(ShotTimeROIind2), midT2, radT2,"~.r");
+p1 = plot (R(ShotTimeROIind1), midT1,".b");
+p2 = plot (R(ShotTimeROIind2), midT2, ".r");
+ lgd12 = legend([p1 p2 ], ...
+  {'before saw', 'after sawtooth'})
+set(lgd12, 'fontsize', 14);
 xlim([40 60]);
 set(gca, 'fontsize', 14);
 xlabel('R, cm');
