@@ -209,6 +209,7 @@ x2 = Tint2over;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %end
 %%%%%%%%%%%%%%%%%%%%%%%%%%% find Jaccard index Te1, Te2 %%%%%%%%%%%%%%%%%%%%%%%
+clear JiT1T2over
 for jj = 1:length(Rover)
 % jaccard Te1 Te2
   [x1cap, x2cap]=wedge(Tint1over(jj), Tint2over(jj));

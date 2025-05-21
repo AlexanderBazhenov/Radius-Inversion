@@ -39,6 +39,9 @@ yy = [max(JiT1T2over)/2 max(JiT1T2over)/2]
 p2 = plot(xx, yy, '-r')
 set(p2, 'linewidth', 2)
 %
+xlim([Rinvoutinf-0.1 Rinvoutsup+0.1])
+ylim([min(JiT1T2over)-0.1 max(JiT1T2over)+0.1])
+%
 set(gca, 'fontsize', 14)
 ylabel('Ji (Te1, Te2)')
 xlabel('R')

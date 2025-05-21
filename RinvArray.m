@@ -12,7 +12,7 @@ RinvINNarray(jj) = infsup(0,0);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for shotNinv = 31:length(DATARinv )
+for shotNinv = 26:length(DATARinv )
   if RinvDataExist( shotNinv) == 1
 ##  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PrepareTask
