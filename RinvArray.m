@@ -12,7 +12,7 @@ RinvINNarray(jj) = infsup(0,0);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for shotNinv = 26:length(DATARinv )
+for shotNinv = 15 : length(DATARinv )
   if RinvDataExist( shotNinv) == 1
 ##  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREPARE TASK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PrepareTask
@@ -25,34 +25,6 @@ radT2 = 0.05*midT2;
 Tint2 = midrad(midT2, radT2);
 
 
-##
-##% array of radiuses
-##R1 = R(ShotTimeROIind1)
-##R2 = R(ShotTimeROIind2)
-##% common points in R1 R2
-##% 8 points
-##[R12, I1, I2] = intersect(R1, R2)
-##% I1, I2 indexes in R1 R2
-##% Te by I1, I2
-##x1 = Te(ShotTimeROIind1(I1))
-##x2 = Te(ShotTimeROIind2(I2))
-##%%%%%%%%%%%%%%%%%%%%%%%%%%% find Jaccard index Te1, Te2 %%%%%%%%%%%%%%%%%%%%%%%
-##for jj = 1:length(I1)
-##% jaccard Te1 Te2
-##  [x1cap, x2cap]=wedge(Tint1(I1(jj)), Tint2(I2(jj)));
-##  [x1cup, x2cup]=vee(Tint1(I1(jj)), Tint2(I2(jj)));
-##  out=(x2cap-x1cap)/abs(x1cup-x2cup);
-##  JiT1T2(jj) = out;
-##end
-##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PLOT Jaccard index Te1, Te2
-##figure
-##hold on
-##plot(JiT1T2, 'ok')
-##% find max Ji in the middle of arrays
-##[maxJiT1T2, maxJiT1T2ind] = max(JiT1T2(2:end-1))
-##% maxJiT1T2ind - index in R12 cropped
-##% maxJi - index in R12
-##maxJi = maxJiT1T2ind + 1
 ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  R(ShotTimeROIind1(I1(maxJi))) =  R(ShotTimeROIind2(I2(maxJi)))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

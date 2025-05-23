@@ -14,24 +14,17 @@ midT2 = Te(ShotTimeROIind2);
 radT2 = 0.05*midT2;
 Tint2 = midrad(midT2, radT2);
 
+figure
+hold on
+plot(midT1)
+plot(midT2)
+
 % array of radiuses
 R1 = R(ShotTimeROIind1)
 R2 = R(ShotTimeROIind2)
 % common points in R1 R2
 % 8 points
 [R12, I1, I2] = intersect(R1, R2)
-
-##figure
-##hold on
-##plot(R(ShotTimeROIind1), midT1, 'sb')
-##plot(R(ShotTimeROIind2), midT2, 'sr')
-
-
-
-##figure
-##hold on
-##plot(R1, midT1, 'sb')
-##plot(R2, midT2, 'sr')
 
 % sort R1 R2
 [R1sort, I1sort] = sort(R1(I1))
@@ -74,26 +67,6 @@ T2less = setdiff(T2less, maxJi)
 T2more = setdiff(T2more, maxJi)
 % 3 points for ROI
 PointsROI3
-%
-##figure
-##hold on
-##plot(R1sort, midT1(I1), 'sb')
-##plot(R2sort, midT2(I2), 'sr')
-##xx = [ R1(Rind1less) R1sort(maxJi) R1(Rind1more) ]
-##yy = [ midT1(Rind1less) midT1(Rind1Jimax) midT1(Rind1more) ]
-##plot(xx, yy, '-b')
-##xx = [ R2(Rind2less) R2sort(maxJi) R2(Rind2more) ]
-##yy = [ midT2(Rind2less) midT2(Rind2Jimax) midT2(Rind2more) ]
-##plot(xx, yy, '-r')
-##xlim([R2(Rind2less) R2(Rind2more)] )
-##ylim( [ midT1(Rind1more)  midT1(Rind1less)  ] )
-##set(gca, 'fontsize', 14)
-##xlabel('R')
-##ylabel('Te')
-##  titlestr = strcat('Te vs R ROIover Ji >0')
-##title(titlestr)
-##figure_name_out=strcat(titlestr, '.png')
-##print('-dpng', '-r300', figure_name_out), pwd
 %
 ROIoversampled12
 %
