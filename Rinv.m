@@ -62,39 +62,8 @@ RinvArray
 % RinvArray -> FindRinvInterval -> PlotRinvOutInn
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 2025-05-06
-% Nick Mordovin results
-DATARint = csvread("interval_inversion.csv")
-% read results
-ShotInt = DATARint (2:end, 1);
-Rinnmid = DATARint (2:end, 2);
-Rinnrad = DATARint (2:end, 3);
-Routmid = DATARint (2:end, 4);
-Routrad = DATARint (2:end, 5);
-BtInt = DATARint (2:end, 6);
-IpInt = DATARint (2:end, 7);
-for ii = 1:length(ShotInt)
-  BtIpInt(ii)=  BtInt (ii) / IpInt(ii);
-end
-%
-figure
-hold on
-errorbar(BtIpInt, Rinnmid, Rinnrad,"~.b");
-errorbar(BtIpInt, Routmid, Routrad,"~.r");
-p1 = plot(BtIpInt, Rinnmid, 'sb')
-p2 = plot(BtIpInt, Routmid, 'sr')
- lgd12 = legend([p1 p2 ], ...
-  {'Inn', 'Out'})
-  set(lgd12, 'fontsize', 14);
-set(gca, 'fontsize', 14)
-xlabel('BT/Ip')
-ylabel('Rinv')
-grid on
-titlestr = strcat('Rinv vs BpIp interval Inn Out')
-title(titlestr)
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
-
+% 2025-05-26
+RinvbyBtIpEstimations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 2025-05-14
