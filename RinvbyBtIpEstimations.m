@@ -69,10 +69,50 @@ title(titlestr)
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure
+hold on
+errorbar(BtIpInt, Routmid, Routrad,"~.k");
+for ii = 1 : length (xxBtIp)
+  xx = [xxBtIp(ii) xxBtIp(ii)]
+  yy = [40 60 ]
+  plot(xx, yy, '--k')
+end
+
 ii = 1
 [BtIpIntInd] = find(BtIpInt > xxBtIp(ii) & BtIpInt < xxBtIp(ii+1))
 RinvGmidOUT = Routmid(BtIpIntInd)
 RinvGradOUT = Routrad(BtIpIntInd)
 
+X = midrad(RinvGmidOUT, RinvGradOUT)
+minC12 = min( inf(X) ), maxC12 = max( sup(X) ), midC12 = ( min( inf(X) )+ max( sup(X) ) )/2,
+clear C, C = [  infsup(minC12, midC12), infsup(midC12, maxC12)  ]
+C4 = []
+C4 = [C4,  infsup(minC12, minC12+ (midC12-minC12)/2) ]
+C4 = [C4, infsup( minC12+ (midC12-minC12)/2, midC12) ]
+C4 = [C4, infsup( midC12, midC12+ (maxC12 - midC12)/2) ]
+C4 = [C4, infsup( midC12+ (maxC12 - midC12)/2,  maxC12) ]
+W = C4
+% [CXwid]= XinCrel(X, C4)
+tmp = XinCrel(X, W);
+XbyC = sum(tmp, 2);
+%
+sum(XbyC)
+HistXbyC = XbyC/sum(XbyC)
+cumsumHistXbyC = cumsum(HistXbyC)
+% find Quartiles
+Q1less = find(cumsumHistXbyC < .25)
+Q3more = find(cumsumHistXbyC > .75)
+%
+RestINN = infsup(inf(W(Q1less+1)), sup(W(Q3more-1)))
+RestOUT = infsup(inf(W(1)), sup(W(end)))
+
+errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestOUT), rad(RestOUT),"~.r");
+errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestINN), rad(RestINN),"~.b");
+xlim([0.0015 0.004])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 
