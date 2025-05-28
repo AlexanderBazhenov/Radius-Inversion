@@ -56,9 +56,9 @@ plot(BtIparrayNZ, RinvarrayNZ, 'sk')
 RinvarrayNZNaN = isnan(RinvarrayNZ);
 RinvarrayNZtrue = find(RinvarrayNZNaN == 0)
 
-##ShotROIstr = num2str(ShotRO I)
-##T1str = num2str(T1)
-##T2str = num2str(T2)
+ShotROIstr = num2str(ShotROI)
+T1str = num2str(Time1)
+T2str = num2str(Time2)
 figure
 errorbar(BtIparrayNZ(RinvarrayNZtrue), RinvarrayNZ(RinvarrayNZtrue), errRint*ones(length(RinvarrayNZtrue),1),"~.b");
 set(gca, 'fontsize', 14)
