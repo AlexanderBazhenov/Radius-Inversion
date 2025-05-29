@@ -87,8 +87,7 @@ RestOUTarray = []
 %
 for ii = 1: length (xxBtIp)-1
 [BtIpIntInd] = find(BtIpInt > xxBtIp(ii) & BtIpInt < xxBtIp(ii+1))
-if length(BtIpIntInd) > 0
-   % IntervalHIST
+if (length(BtIpIntInd) > 0 )
    % IntervalHIST
   RinvGmidOUT = Routmid(BtIpIntInd)
   RinvGradOUT = Routrad(BtIpIntInd)
@@ -208,6 +207,16 @@ end
 
 figure
 hold on
+pcolor = [0.7 0.9 0.7]
+%pcolor = 2*Pantone
+% point forward - back
+px = [ xp; xp(end:-1:1) ]
+py = [ yp(:, 1); yp(end:-1:1, 2) ]
+ h1 =  patch(px,py,pcolor);
+##   plot(px,py(:,1),"m-","LineWidth",1, "color", 0.5*pcolor);
+##   plot(x,yp(:,2),"m-","LineWidth",1, "color", 0.5*pcolor);
+
+
 errorbar(x, ytolmaxpos, epsilon,"~.r");
 %
 p1 = plot(x, ytolmaxpos, '.r')
@@ -216,14 +225,15 @@ xlimits = [0.001 0.0055];
 ##ir_plotmodelset(irp_steam, xlimits)
 ##ir_scatter(irp_steam,'bo')
 
-xp = [0.0015; 0.004; 0.0045; 0.005]
+xp = [0.004 0.0045 0.005]'
+xp = [x; xp]
 Xp = [xp.^0 xp];
 %ir_plotmodelset(irp_steam, xlimits)
 yp = ir_predict(Xp, irp_steam)
 ypmid = mean(yp,2)                     # средние значения прогнозных интервалов
 yprad = 0.5 * (yp(:,2) - yp(:,1))
 ir_scatter(ir_problem(Xp,ypmid,yprad),'k.')
-p2 = plot(xp, ypmid, '.r')
+p2 = plot(xp, ypmid, '.k')
 plot(xp, ypmid, '--k')
  lgd12 = legend([p1 p2 ], ...
   {'data', 'prediction'})
@@ -231,9 +241,77 @@ plot(xp, ypmid, '--k')
 set(gca, 'fontsize', 14)
 ylabel('Bt/Ip')
 xlabel('Rinv')
-titlestr = strcat('Rinv vs BpIp intervalHIST w prediction')
+%
+titlestr = strcat('Rinv vs BpIp intervalHIST w prediction', ' radTHR=', num2str(radTHR))
 title(titlestr)
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 % /OUT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Correct RestOUT
+% Theshold reasonable radius
+radTHR = 3
+RestINNarray = []
+RestOUTarray = []
+%
+for ii = 1: length (xxBtIp)-1
+[BtIpIntInd] = find(BtIpInt > xxBtIp(ii) & BtIpInt < xxBtIp(ii+1))
+if (length(BtIpIntInd) > 0 )
+   % IntervalHIST
+  RinvGmidOUT = Routmid(BtIpIntInd)
+  RinvGradOUT = Routrad(BtIpIntInd)
+%
+indradTHR = find (RinvGradOUT < radTHR)
+  RinvGmidOUT = RinvGmidOUT(indradTHR )
+  RinvGradOUT = RinvGradOUT(indradTHR )
+
+  X = midrad(RinvGmidOUT, RinvGradOUT)
+  % W = ?
+  nbins = 8
+  ##minC12 = min( inf(X) ), maxC12 = max( sup(X) ), midC12 = ( min( inf(X) )+ max( sup(X) ) )/2,
+  ##clear C, C = [  infsup(minC12, midC12), infsup(midC12, maxC12)  ]
+  ##C4 = []
+  ##C4 = [C4,  infsup(minC12, minC12+ (midC12-minC12)/2) ]
+  ##C4 = [C4, infsup( minC12+ (midC12-minC12)/2, midC12) ]
+  ##C4 = [C4, infsup( midC12, midC12+ (maxC12 - midC12)/2) ]
+  ##C4 = [C4, infsup( midC12+ (maxC12 - midC12)/2,  maxC12) ]
+  ##W = C4
+  % [CXwid]= XinCrel(X, C4)
+  stepW = (max(sup(X)) -min(inf(X)))/ (nbins)
+  %Wterm = min(inf(dataIR)) : stepW : max(sup(dataIR))
+  for jj=1:nbins
+    W(jj) =  infsup(min(inf(X))+stepW*(jj-1), min(inf(X)) + stepW*jj);
+   % infsup(min(inf(dataIR))+stepW*ii, min(inf(dataIR)) + stepW*(ii+1)) ]
+  end
+  %
+  tmp = XinCrel(X, W);
+  XbyC = sum(tmp, 2);
+  %
+  sum(XbyC)
+  HistXbyC = XbyC/sum(XbyC)
+  cumsumHistXbyC = cumsum(HistXbyC)
+  % find Quartiles
+  Q1less = find(cumsumHistXbyC < .25)
+  Q3more = find(cumsumHistXbyC > .75)
+  %
+  ##RestINN = infsup(inf(W(Q1less+1)), sup(W(Q3more-1)))
+  ##RestOUT = infsup(inf(W(1)), sup(W(end)))
+  RestINN = infsup(inf(W(Q1less(end)+1)), sup(W(Q3more(1)-1)))
+  RestOUT = infsup(inf(W(1)), sup(W(end)))
+  RestINNarray = [RestINNarray, RestINN ]
+  RestOUTarray = [RestOUTarray, RestOUT ]
+  %
+  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestOUT), rad(RestOUT),"~.r");
+  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestINN), rad(RestINN),"~.b");
+else
+  RestINNarray = [RestINNarray, NaN ]
+  RestOUTarray = [RestOUTarray, NaN ]
+end
+end
+xlim([0.0015 0.004])
+
+% /Correct RestOUT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
