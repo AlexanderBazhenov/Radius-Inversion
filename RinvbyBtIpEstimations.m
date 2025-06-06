@@ -43,28 +43,7 @@ for ii = 1 : length (xxBtIp)
   plot(xx, yy, '--k')
 end
 %
-##xx = [0.0018 0.0018]
-##yy = [0 60 ]
-##plot(xx, yy, '--k')
-##xx = [0.0022 0.0022]
-##plot(xx, yy, '--k')
-##xx = [0.0024 0.0024]
-##plot(xx, yy, '--k')
-##xx = [0.0026 0.0026]
-##plot(xx, yy, '--k')
-##xx = [0.00275 0.00275]
-##plot(xx, yy, '--k')
-##xx = [0.00295 0.00295]
-##plot(xx, yy, '--k')
-##xx = [0.0032 0.0032]
-##plot(xx, yy, '--k')
-##xx = [0.0034 0.0034]
-##plot(xx, yy, '--k')
-##xx = [0.00355 0.00355]
-##plot(xx, yy, '--k')
-##xx = [0.00365 0.00365]
-##plot(xx, yy, '--k')
-    set(lgd12, 'location', 'east');
+set(lgd12, 'location', 'east');
 titlestr = strcat('Rinv by BpIp interval Inn Out HIST')
 title(titlestr)
 figure_name_out=strcat(titlestr, '.png')
@@ -81,7 +60,7 @@ for ii = 1 : length (xxBtIp)
   plot(xx, yy, '--k')
 end
 xlim([0.0015 0.004])
-% arrays of results
+%%%%%%%%%%%%%%%%%%%%%%%  ARRAYS OF RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 RestINNarray = []
 RestOUTarray = []
 %
@@ -136,8 +115,7 @@ else
 end
 end
 xlim([0.0015 0.004])
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%  /ARRAYS OF RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % xxBtIp = [0.0018 0.0022 0.0024 0.0026 0.00275 0.00295 0.0032 0.0034 0.00355 0.00365 0.0039]
 for kk = 1: length(xxBtIp)-1
@@ -236,7 +214,7 @@ ir_scatter(ir_problem(Xp,ypmid,yprad),'k.')
 p2 = plot(xp, ypmid, '.k')
 plot(xp, ypmid, '--k')
  lgd12 = legend([p1 p2 ], ...
-  {'data', 'prediction'})
+  {'OUT data', 'prediction'})
   set(lgd12, 'fontsize', 14);
 set(gca, 'fontsize', 14)
 ylabel('Bt/Ip')
@@ -270,7 +248,7 @@ indradTHR = find (RinvGradOUT < radTHR)
 
   X = midrad(RinvGmidOUT, RinvGradOUT)
   % W = ?
-  nbins = 8
+  nbins = 8 * 2
   ##minC12 = min( inf(X) ), maxC12 = max( sup(X) ), midC12 = ( min( inf(X) )+ max( sup(X) ) )/2,
   ##clear C, C = [  infsup(minC12, midC12), infsup(midC12, maxC12)  ]
   ##C4 = []
