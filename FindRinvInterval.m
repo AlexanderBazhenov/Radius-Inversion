@@ -13,22 +13,68 @@ Tint1 = midrad(midT1, radT1);
 midT2 = Te(ShotTimeROIind2);
 radT2 = 0.05*midT2;
 Tint2 = midrad(midT2, radT2);
-
+%
 figure
 hold on
 plot(midT1)
 plot(midT2)
-
 % array of radiuses
 R1 = R(ShotTimeROIind1)
 R2 = R(ShotTimeROIind2)
 % common points in R1 R2
 % 8 points
 [R12, I1, I2] = intersect(R1, R2)
-
 % sort R1 R2
 [R1sort, I1sort] = sort(R1(I1))
 [R2sort, I2sort] = sort(R2(I2))
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2025-06-09
+% Brute force oversampling
+
+figure
+hold on
+plot(R12, mid(Tint1(I1)), 'sb')
+plot(R12, mid(Tint2(I2)), 'sr')
+
+T1overarr = []
+T2overarr = []
+Rover = []
+%
+stepR = 0.1
+for kk = 1:length(R12)-1
+Rmin = R12(kk)
+Rmax = R12(kk+1)
+%
+Rover1 =  Rmin:stepR:Rmax
+Rtotover1 = Rmax - Rmin
+dRover1 = stepR / Rtotover1
+NstepR1 = round(Rtotover1 / stepR)
+T1over1 =  -mid(Tint1(I1(kk))) + mid(Tint1(I1(kk+1)))
+T2over1 =  -mid(Tint2(I2(kk))) + mid(Tint2(I2(kk+1)))
+% arrays oversampled
+clear T1overarr1
+clear T2overarr1
+for jj=1:NstepR1+1
+  T1overarr1(jj)= mid(Tint1(I1(kk+1))) + T1over1*dRover1*(jj-1);
+  T2overarr1(jj)= mid(Tint2(I2(kk+1))) + T2over1*dRover1*(jj-1);
+end
+% Join Rover1 Rover2
+##Rover = [Rover1 Rover2(2:end)]
+T1overarr = [ T1overarr T1overarr1]; %(2:end)]
+T2overarr = [ T2overarr T2overarr1]; %(2:end)]
+Rover = [ Rover Rover1];
+end
+% Brute force oversampling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure
+hold on
+plot(Rover, T1overarr, '-b')
+plot(Rover, T2overarr, '-r')
+plot(R(ShotTimeROIind1), Te(ShotTimeROIind1), '.bs');
+plot(R(ShotTimeROIind1), Te(ShotTimeROIind1), '-b');
+plot(R(ShotTimeROIind2), Te(ShotTimeROIind2), '.rs');
+plot(R(ShotTimeROIind2), Te(ShotTimeROIind2), '-r');
 
 
 

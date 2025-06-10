@@ -20,6 +20,15 @@ dirZhilin = 'e:\Users\Public\Documents\:\ST\2025\T\octave-interval\m'
 ##dir2023 =  'd:\ST\2023\T\'
 ##dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
 ##dirZhilin = 'd:\ST\2025\T\octave-interval\m'
+##
+##% Toshiba
+##dirnow = 'D:\DATA\ST\2025\T\'
+##dirroot = 'D:\DATA\\ST\2024\T\'
+##dirki = 'D:\DATA\\ST\2024\T\kinterval-0.0.1'
+##dirData = 'D:\DATA\\ST\2024\T\DRS4\'
+##dir2023 =  'd:\DATA\\ST\2023\T\'
+##dirRinvOut = 'D:\DATA\\ST\2025\ST\2025\T\Rinv\'
+##dirZhilin = 'd:\DATA\\ST\2025\T\octave-interval\m'
 
 % 2025-03-26
 cd(dirnow), pwd
