@@ -22,14 +22,14 @@ dirZhilin = 'e:\Users\Public\Documents\ST\2025\T\octave-interval\m'
 ##dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
 ##dirZhilin = 'd:\ST\2025\T\octave-interval\m'
 ##
-##% Toshiba
-##dirnow = 'D:\DATA\ST\2025\T\'
-##dirroot = 'D:\DATA\\ST\2024\T\'
-##dirki = 'D:\DATA\\ST\2024\T\kinterval-0.0.1'
-##dirData = 'D:\DATA\\ST\2024\T\DRS4\'
-##dir2023 =  'd:\DATA\\ST\2023\T\'
-##dirRinvOut = 'D:\DATA\\ST\2025\ST\2025\T\Rinv\'
-##dirZhilin = 'd:\DATA\\ST\2025\T\octave-interval\m'
+% Toshiba
+dirnow = 'D:\DATA\ST\2025\T\'
+dirroot = 'D:\DATA\\ST\2024\T\'
+dirki = 'D:\DATA\\ST\2024\T\kinterval-0.0.1'
+dirData = 'D:\DATA\\ST\2024\T\DRS4\'
+dir2023 =  'd:\DATA\\ST\2023\T\'
+dirRinvOut = 'D:\DATA\\ST\2025\ST\2025\T\Rinv\'
+dirZhilin = 'd:\DATA\\ST\2025\T\octave-interval\m'
 
 % 2025-03-26
 cd(dirnow), pwd
@@ -216,15 +216,17 @@ ir_scatter(ir_problem(Xpfuture,ypmid(ROIfuture),yprad(ROIfuture)),'r.')
 %ir_scatter(ir_problem(Xp,ypmid,yprad),'r.')
 p2 = plot(xp(ROIfuture), ypmid(ROIfuture), 'sr')
 % OUT data
-errorbar(x, ytolmaxpos, epsilon,"~.b");
-p1 = plot(x, ytolmaxpos, '.b')
+##errorbar(x, ytolmaxpos, epsilon,"~.b");
+##p1 = plot(x, ytolmaxpos, '.b')
+errorbar(x, y, epsilon,"~.b");
+p1 = plot(x, y, '.b')
 %
 %plot(xp, ypmid, '.k')
  lgd12 = legend([p1 p2 ], ...
   {'OUT data', 'prediction'})
   set(lgd12, 'fontsize', 14);
 set(gca, 'fontsize', 14)
-
+grid on
 xlabel('Bt/Ip')
 ylabel('Rinv')
 %
@@ -234,6 +236,11 @@ set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 % /OUT
+
+xx = xpfuture(end)
+yymid = ypmid(ROIfuture(end))
+yyrad = yprad(ROIfuture(end))
+yyOUT = midrad(yymid, yyrad)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
