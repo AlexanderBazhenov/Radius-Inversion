@@ -1,4 +1,44 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % 2025-06-07
+clear all
+close all
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2024-08-14
+dirnow = 'e:\Users\Public\Documents\ST\2025\T\'
+dirroot ='e:\Users\Public\Documents\ST\2024\T\'
+dir2023 ='e:\Users\Public\Documents\ST\2023\T\'
+dirki ='e:\Users\Public\Documents\ST\2024\T\kinterval-0.0.1\'
+dir2D = 'e:\Users\Public\Documents\ST\2024\T\IntLinInc2D\'
+dirRinvOut = 'e:\Users\Public\Documents\ST\2025\T\Rinv\'
+dirZhilin = 'e:\Users\Public\Documents\ST\2025\T\octave-interval\m'
+
+% HomePC
+dirnow = 'D:\ST\2025\T\'
+dirroot = 'D:\ST\2024\T\'
+dirki = 'D:\ST\2024\T\kinterval-0.0.1'
+dirData = 'D:\ST\2024\T\DRS4\'
+dir2023 =  'd:\ST\2023\T\'
+dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
+dirZhilin = 'd:\ST\2025\T\octave-interval\m'
+##
+% Toshiba
+##dirnow = 'D:\DATA\ST\2025\T\'
+##dirroot = 'D:\DATA\\ST\2024\T\'
+##dirki = 'D:\DATA\\ST\2024\T\kinterval-0.0.1'
+##dirData = 'D:\DATA\\ST\2024\T\DRS4\'
+##dir2023 =  'd:\DATA\\ST\2023\T\'
+##dirRinvOut = 'D:\DATA\\ST\2025\ST\2025\T\Rinv\'
+##dirZhilin = 'd:\DATA\\ST\2025\T\octave-interval\m'
+
+% 2025-03-26
+cd(dirnow), pwd
+
+addpath(dirnow)
+addpath(dirZhilin)
+
+pkg load interval
+
 % 2025-05-27
 % Nick Mordovin results
 DATARint = csvread("interval_inversion.csv")
@@ -25,13 +65,14 @@ p2 = plot(BtIpInt, Routmid, 'sr')
   set(lgd12, 'fontsize', 14);
     set(lgd12, 'location', 'northeast');
 set(gca, 'fontsize', 14)
-xlabel('BT/Ip')
+xlabel('Bt/Ip')
 ylabel('Rinv')
 grid on
-titlestr = strcat('Rinv vs BpIp interval Inn Out')
-title(titlestr)
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+titlestr = strcat('Rinv vs BtIp interval Inn Out')
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 %figure
 hist(BtIpInt, 40)
@@ -44,10 +85,11 @@ for ii = 1 : length (xxBtIp)
 end
 %
 set(lgd12, 'location', 'east');
-titlestr = strcat('Rinv by BpIp interval Inn Out HIST')
-title(titlestr)
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+titlestr = strcat('Rinv by BtIp interval Inn Out HIST')
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -61,59 +103,10 @@ for ii = 1 : length (xxBtIp)
 end
 xlim([0.0015 0.004])
 %%%%%%%%%%%%%%%%%%%%%%%  ARRAYS OF RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-RestINNarray = []
-RestOUTarray = []
-%
-for ii = 1: length (xxBtIp)-1
-[BtIpIntInd] = find(BtIpInt > xxBtIp(ii) & BtIpInt < xxBtIp(ii+1))
-if (length(BtIpIntInd) > 0 )
-   % IntervalHIST
-  RinvGmidOUT = Routmid(BtIpIntInd)
-  RinvGradOUT = Routrad(BtIpIntInd)
-
-  X = midrad(RinvGmidOUT, RinvGradOUT)
-  % W = ?
-  nbins = 8
-  ##minC12 = min( inf(X) ), maxC12 = max( sup(X) ), midC12 = ( min( inf(X) )+ max( sup(X) ) )/2,
-  ##clear C, C = [  infsup(minC12, midC12), infsup(midC12, maxC12)  ]
-  ##C4 = []
-  ##C4 = [C4,  infsup(minC12, minC12+ (midC12-minC12)/2) ]
-  ##C4 = [C4, infsup( minC12+ (midC12-minC12)/2, midC12) ]
-  ##C4 = [C4, infsup( midC12, midC12+ (maxC12 - midC12)/2) ]
-  ##C4 = [C4, infsup( midC12+ (maxC12 - midC12)/2,  maxC12) ]
-  ##W = C4
-  % [CXwid]= XinCrel(X, C4)
-  stepW = (max(sup(X)) -min(inf(X)))/ (nbins)
-  %Wterm = min(inf(dataIR)) : stepW : max(sup(dataIR))
-  for jj=1:nbins
-    W(jj) =  infsup(min(inf(X))+stepW*(jj-1), min(inf(X)) + stepW*jj);
-   % infsup(min(inf(dataIR))+stepW*ii, min(inf(dataIR)) + stepW*(ii+1)) ]
-  end
-  %
-  tmp = XinCrel(X, W);
-  XbyC = sum(tmp, 2);
-  %
-  sum(XbyC)
-  HistXbyC = XbyC/sum(XbyC)
-  cumsumHistXbyC = cumsum(HistXbyC)
-  % find Quartiles
-  Q1less = find(cumsumHistXbyC < .25)
-  Q3more = find(cumsumHistXbyC > .75)
-  %
-  ##RestINN = infsup(inf(W(Q1less+1)), sup(W(Q3more-1)))
-  ##RestOUT = infsup(inf(W(1)), sup(W(end)))
-  RestINN = infsup(inf(W(Q1less(end)+1)), sup(W(Q3more(1)-1)))
-  RestOUT = infsup(inf(W(1)), sup(W(end)))
-  RestINNarray = [RestINNarray, RestINN ]
-  RestOUTarray = [RestOUTarray, RestOUT ]
-  %
-  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestOUT), rad(RestOUT),"~.r");
-  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestINN), rad(RestINN),"~.b");
-else
-  RestINNarray = [RestINNarray, NaN ]
-  RestOUTarray = [RestOUTarray, NaN ]
-end
-end
+% Correct RestOUT
+% Theshold reasonable radius
+radTHR = 3
+CorrectRestOUT
 xlim([0.0015 0.004])
 %%%%%%%%%%%%%%%%%%%%%%%  /ARRAYS OF RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -137,8 +130,9 @@ xlabel('Bt/Ip')
 ylabel('Rinv')
 xlim([xxBtIp(1) xxBtIp(end)])
 grid on
-titlestr = strcat('Rinv vs BpIp HISTinterval Inn Out')
-title(titlestr)
+titlestr = strcat('Rinv vs BtIp HISTinterval Inn Out',  ' Max datum radius=', num2str(radTHR))
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
@@ -160,17 +154,31 @@ X = [ x.^0 x ];                               # матрица значений 
 for ii=1:length(X)
   ytolmax(ii) = argmax(1) + argmax(2)*X(ii, 2)
 end
+%%%%%%%%%%%%%%%%%%%%%%%%%    OUT  FIGURE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure
 hold on
-errorbar(x, y, epsilon,"~.r");
-plot(x, ytolmax,'sr')
-plot(x, ytolmax,'-r')
-
-% tol_i > 0
+errorbar(x, y, epsilon,"~.b");
+plot(x, ytolmax,'sb')
+plot(x, ytolmax,'-b')
+% TOL_i > 0
 tolpos = find(env(:,2)>0)
 tolpos =env(tolpos, 1)
 plot(x(tolpos), ytolmax(tolpos),'sk')
-
+%
+set(gca, 'fontsize', 14)
+##px = [ xp; xp(end:-1:1) ]
+##py = [ yp(:, 1); yp(end:-1:1, 2) ]
+##h2 =  patch(px,py,pcolor);
+xlabel('Bt/Ip')
+ylabel('Rinv')
+%
+titlestr = strcat('Rinv OUT vs BpIp intervalHIST', ' radTHR=', num2str(radTHR))
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
+figure_name_out=strcat(titlestr, '.png')
+print('-dpng', '-r300', figure_name_out), pwd
+%%%%%%%%%%%%%%%%%%%%%%%%%  /OUT  FIGURE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 Xpos = X ( tolpos, :)
 [tolmaxpos,argmaxpos, envpos] = tolsolvty(Xpos,Xpos,infy(tolpos)',supy(tolpos)',1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -181,115 +189,59 @@ irp_steam = ir_problem(Xpos, y(tolpos)', epsilon(tolpos)', lb);
 for ii=1:length(Xpos)
   ytolmaxpos(ii) = argmax(1) + argmax(2)*Xpos(ii, 2)
 end
-
-
+%
+%%%%%%%%%%%%%%%%%%%%%%%%% PREDICT FIGURE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure
 hold on
 pcolor = [0.7 0.9 0.7]
-%pcolor = 2*Pantone
-% point forward - back
-px = [ xp; xp(end:-1:1) ]
-py = [ yp(:, 1); yp(end:-1:1, 2) ]
- h1 =  patch(px,py,pcolor);
-##   plot(px,py(:,1),"m-","LineWidth",1, "color", 0.5*pcolor);
-##   plot(x,yp(:,2),"m-","LineWidth",1, "color", 0.5*pcolor);
 
-
-errorbar(x, ytolmaxpos, epsilon,"~.r");
-%
-p1 = plot(x, ytolmaxpos, '.r')
-
-xlimits = [0.001 0.0055];
-##ir_plotmodelset(irp_steam, xlimits)
-##ir_scatter(irp_steam,'bo')
-
-xp = [0.004 0.0045 0.005]'
-xp = [x; xp]
+%xlimits = [0.0019 0.0056];
+% Points to predict
+xpfuture = [0.004 0.0045 0.005]'
+xp = [x; xpfuture]
 Xp = [xp.^0 xp];
 %ir_plotmodelset(irp_steam, xlimits)
 yp = ir_predict(Xp, irp_steam)
+px = [ xp; xp(end:-1:1) ]
+py = [ yp(:, 1); yp(end:-1:1, 2) ]
+h2 =  patch(px,py,pcolor);
+
 ypmid = mean(yp,2)                     # средние значения прогнозных интервалов
 yprad = 0.5 * (yp(:,2) - yp(:,1))
-ir_scatter(ir_problem(Xp,ypmid,yprad),'k.')
-p2 = plot(xp, ypmid, '.k')
-plot(xp, ypmid, '--k')
+%
+ROIfuture = length(Xp)-length(xpfuture)+1:length(Xp)
+Xpfuture = Xp(ROIfuture,:)
+ir_scatter(ir_problem(Xpfuture,ypmid(ROIfuture),yprad(ROIfuture)),'r.')
+
+%ir_scatter(ir_problem(Xp,ypmid,yprad),'r.')
+p2 = plot(xp(ROIfuture), ypmid(ROIfuture), 'sr')
+% OUT data
+##errorbar(x, ytolmaxpos, epsilon,"~.b");
+##p1 = plot(x, ytolmaxpos, '.b')
+errorbar(x, y, epsilon,"~.b");
+p1 = plot(x, y, '.b')
+%
+%plot(xp, ypmid, '.k')
  lgd12 = legend([p1 p2 ], ...
   {'OUT data', 'prediction'})
   set(lgd12, 'fontsize', 14);
 set(gca, 'fontsize', 14)
-ylabel('Bt/Ip')
-xlabel('Rinv')
+grid on
+xlabel('Bt/Ip')
+ylabel('Rinv')
 %
-titlestr = strcat('Rinv vs BpIp intervalHIST w prediction', ' radTHR=', num2str(radTHR))
-title(titlestr)
+titlestr = strcat('Rinv OUT vs BpIp intervalHIST w prediction', ' radTHR=', num2str(radTHR))
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 % /OUT
+
+xx = xpfuture(end)
+yymid = ypmid(ROIfuture(end))
+yyrad = yprad(ROIfuture(end))
+yyOUT = midrad(yymid, yyrad)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Correct RestOUT
-% Theshold reasonable radius
-radTHR = 3
-RestINNarray = []
-RestOUTarray = []
-%
-for ii = 1: length (xxBtIp)-1
-[BtIpIntInd] = find(BtIpInt > xxBtIp(ii) & BtIpInt < xxBtIp(ii+1))
-if (length(BtIpIntInd) > 0 )
-   % IntervalHIST
-  RinvGmidOUT = Routmid(BtIpIntInd)
-  RinvGradOUT = Routrad(BtIpIntInd)
-%
-indradTHR = find (RinvGradOUT < radTHR)
-  RinvGmidOUT = RinvGmidOUT(indradTHR )
-  RinvGradOUT = RinvGradOUT(indradTHR )
 
-  X = midrad(RinvGmidOUT, RinvGradOUT)
-  % W = ?
-  nbins = 8
-  ##minC12 = min( inf(X) ), maxC12 = max( sup(X) ), midC12 = ( min( inf(X) )+ max( sup(X) ) )/2,
-  ##clear C, C = [  infsup(minC12, midC12), infsup(midC12, maxC12)  ]
-  ##C4 = []
-  ##C4 = [C4,  infsup(minC12, minC12+ (midC12-minC12)/2) ]
-  ##C4 = [C4, infsup( minC12+ (midC12-minC12)/2, midC12) ]
-  ##C4 = [C4, infsup( midC12, midC12+ (maxC12 - midC12)/2) ]
-  ##C4 = [C4, infsup( midC12+ (maxC12 - midC12)/2,  maxC12) ]
-  ##W = C4
-  % [CXwid]= XinCrel(X, C4)
-  stepW = (max(sup(X)) -min(inf(X)))/ (nbins)
-  %Wterm = min(inf(dataIR)) : stepW : max(sup(dataIR))
-  for jj=1:nbins
-    W(jj) =  infsup(min(inf(X))+stepW*(jj-1), min(inf(X)) + stepW*jj);
-   % infsup(min(inf(dataIR))+stepW*ii, min(inf(dataIR)) + stepW*(ii+1)) ]
-  end
-  %
-  tmp = XinCrel(X, W);
-  XbyC = sum(tmp, 2);
-  %
-  sum(XbyC)
-  HistXbyC = XbyC/sum(XbyC)
-  cumsumHistXbyC = cumsum(HistXbyC)
-  % find Quartiles
-  Q1less = find(cumsumHistXbyC < .25)
-  Q3more = find(cumsumHistXbyC > .75)
-  %
-  ##RestINN = infsup(inf(W(Q1less+1)), sup(W(Q3more-1)))
-  ##RestOUT = infsup(inf(W(1)), sup(W(end)))
-  RestINN = infsup(inf(W(Q1less(end)+1)), sup(W(Q3more(1)-1)))
-  RestOUT = infsup(inf(W(1)), sup(W(end)))
-  RestINNarray = [RestINNarray, RestINN ]
-  RestOUTarray = [RestOUTarray, RestOUT ]
-  %
-  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestOUT), rad(RestOUT),"~.r");
-  errorbar(mean(BtIpInt(BtIpIntInd)), mid(RestINN), rad(RestINN),"~.b");
-else
-  RestINNarray = [RestINNarray, NaN ]
-  RestOUTarray = [RestOUTarray, NaN ]
-end
-end
-xlim([0.0015 0.004])
-
-% /Correct RestOUT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
