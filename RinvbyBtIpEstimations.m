@@ -14,13 +14,13 @@ dirRinvOut = 'e:\Users\Public\Documents\ST\2025\T\Rinv\'
 dirZhilin = 'e:\Users\Public\Documents\ST\2025\T\octave-interval\m'
 
 % HomePC
-dirnow = 'D:\ST\2025\T\'
-dirroot = 'D:\ST\2024\T\'
-dirki = 'D:\ST\2024\T\kinterval-0.0.1'
-dirData = 'D:\ST\2024\T\DRS4\'
-dir2023 =  'd:\ST\2023\T\'
-dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
-dirZhilin = 'd:\ST\2025\T\octave-interval\m'
+##dirnow = 'D:\ST\2025\T\'
+##dirroot = 'D:\ST\2024\T\'
+##dirki = 'D:\ST\2024\T\kinterval-0.0.1'
+##dirData = 'D:\ST\2024\T\DRS4\'
+##dir2023 =  'd:\ST\2023\T\'
+##dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
+##dirZhilin = 'd:\ST\2025\T\octave-interval\m'
 ##
 % Toshiba
 ##dirnow = 'D:\DATA\ST\2025\T\'

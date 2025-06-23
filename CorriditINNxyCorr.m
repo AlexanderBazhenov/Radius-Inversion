@@ -48,12 +48,14 @@ figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
 tolneg0 = find(env0(:,2)<0)
+tolpos0 = find(env0(:,2)>=0)
 eqnumber0 = env0(:,1)
 eqtol0 = env0(:,2)
 %
 figure
 hold on
-p1 = plot(eqnumber0, eqtol0,'sk')
+%p1 = plot(eqnumber0, eqtol0,'sk')
+p1 = plot(eqnumber0(tolpos0), eqtol0(tolpos0),'sk')
 p2 = plot(eqnumber0(tolneg0), eqtol0(tolneg0),'sr')
  lgd12 = legend([p1 p2 ], ...
   {'Pos', 'Neg'})
