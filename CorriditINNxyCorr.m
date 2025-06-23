@@ -1,83 +1,23 @@
 % 2025-06-20
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for kk = 1: length(xxBtIp)-1
-  [BtIpIntInd] = find(BtIpInt > xxBtIp(kk) & BtIpInt < xxBtIp(kk+1))
-  if (length(BtIpIntInd) > 0 )
-     meanW(kk) = (min(BtIpInt(BtIpIntInd)) + max(BtIpInt(BtIpIntInd)))/2
-    infWint(kk) = min(BtIpInt(BtIpIntInd))
-    supWint(kk) = max(BtIpInt(BtIpIntInd))
-  end
-end
-
-x = meanW';        # количество затраченного топлива
-y =  mid(RestINNarray);        # объем произведенного пара
-epsilon = rad(RestINNarray);  # верхняя граница ошибки для y_i
-indNaN  = isnan(mid(RestINNarray))
-x(indNaN) = []
-y(indNaN) = []
-infWint(indNaN) = []
-supWint(indNaN) = []
-epsilon(indNaN) = []
-infy = y - epsilon
-supy = y + epsilon
-
-X = [ x.^0 x ];               # матрица значений переменных при beta1 и beta2
-infX = [ x.^0 infWint' ];
-supX = [ x.^0 supWint' ];
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[tolmax,argmax, env] = tolsolvty(infX,supX,infy',supy',1);
-%
-tolneg = find(env(:,2)<0)
-eqnumber = env(:,1)
-eqtol = env(:,2)
-%
-figure
-hold on
-p1 = plot(eqnumber, eqtol,'sk')
-p2 = plot(eqnumber(tolneg), eqtol(tolneg),'sr')
- lgd12 = legend([p1 p2 ], ...
-  {'Pos', 'Neg'})
-  set(lgd12, 'fontsize', 14);
-%    set(lgd12, 'location', 'northeast');
-set(gca, 'fontsize', 14)
-xlabel('Eq number')
-ylabel('Tol eq')
-##xlim([xxBtIp(1) xxBtIp(end)])
-grid on
-titlestr = strcat('Tol Rinv Inn ',  ' Max datum radius=', num2str(radTHR))
-ht = title(titlestr)
-set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
-%
-figure
-hist(eqtol)
-set(gca, 'fontsize', 14)
-ylabel('Eq count')
-xlabel('Tol eq')
-##xlim([xxBtIp(1) xxBtIp(end)])
-grid on
-titlestr = strcat('Tol HIST Rinv Inn ',  ' Max datum radius=', num2str(radTHR))
-ht = title(titlestr)
-set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   INN      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% argmax
 x0 = BtIpInt'
 X0 = [ x0.^0 x0 ];
 [tolmax0,argmax0, env0] = tolsolvty(X0,X0,Rinnmid-Rinnrad,Rinnmid+Rinnrad,1);
+%
 for ii=1:length(X0)
-  ytol(ii) = argmax(1) + argmax(2)*X0(ii, 2);
+  ytol0(ii) = argmax0(1) + argmax0(2)*X0(ii, 2);
 end
+%
 figure
 hold on
 errorbar(BtIpInt, Rinnmid, Rinnrad,"~.b");
 p1 = plot(BtIpInt, Rinnmid, 'sb')
-p2 = plot(BtIpInt, ytol, 'sr')
-plot(BtIpInt, ytol, '-r')
+p2 = plot(BtIpInt, ytol0, 'sr')
+plot(BtIpInt, ytol0, '-r')
  lgd12 = legend([p1 p2 ], ...
   {'Data INN', 'argmaxtol'})
   set(lgd12, 'fontsize', 14);
@@ -151,11 +91,15 @@ set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   /INN      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   OUT      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [tolmax1,argmax1, env1] = tolsolvty(X0,X0,Routmid-Routrad,Routmid+Routrad,1);
 for ii=1:length(X0)
   ytol1(ii) = argmax1(1) + argmax1(2)*X0(ii, 2);
 end
+%
 figure
 hold on
 errorbar(BtIpInt, Routmid, Routrad,"~.b");
@@ -239,6 +183,9 @@ figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     RSV   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 for ii = 1:length(Rinnmid)
   Rinnintarray (ii)  = midrad(Rinnmid(ii), Rinnrad(ii));
   Routintarray (ii)  = midrad(Routmid(ii), Routrad(ii));
@@ -263,6 +210,7 @@ set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 
+ylim([0 2.1])
 titlestr = strcat('RSV INN-OUT BtIp 2')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
