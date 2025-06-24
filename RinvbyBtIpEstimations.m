@@ -14,13 +14,13 @@ dirRinvOut = 'e:\Users\Public\Documents\ST\2025\T\Rinv\'
 dirZhilin = 'e:\Users\Public\Documents\ST\2025\T\octave-interval\m'
 
 % HomePC
-##dirnow = 'D:\ST\2025\T\'
-##dirroot = 'D:\ST\2024\T\'
-##dirki = 'D:\ST\2024\T\kinterval-0.0.1'
-##dirData = 'D:\ST\2024\T\DRS4\'
-##dir2023 =  'd:\ST\2023\T\'
-##dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
-##dirZhilin = 'd:\ST\2025\T\octave-interval\m'
+dirnow = 'D:\ST\2025\T\'
+dirroot = 'D:\ST\2024\T\'
+dirki = 'D:\ST\2024\T\kinterval-0.0.1'
+dirData = 'D:\ST\2024\T\DRS4\'
+dir2023 =  'd:\ST\2023\T\'
+dirRinvOut = 'D:\ST\2025\ST\2025\T\Rinv\'
+dirZhilin = 'd:\ST\2025\T\octave-interval\m'
 ##
 % Toshiba
 ##dirnow = 'D:\DATA\ST\2025\T\'
@@ -39,20 +39,49 @@ addpath(dirZhilin)
 
 pkg load interval
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA INI %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 2025-05-27
 % Nick Mordovin results
-DATARint = csvread("interval_inversion.csv")
-% read results
-ShotInt = DATARint (2:end, 1);
-Rinnmid = DATARint (2:end, 2);
-Rinnrad = DATARint (2:end, 3);
-Routmid = DATARint (2:end, 4);
-Routrad = DATARint (2:end, 5);
-BtInt = DATARint (2:end, 6);
-IpInt = DATARint (2:end, 7);
-for ii = 1:length(ShotInt)
-  BtIpInt(ii)=  BtInt (ii) / IpInt(ii);
-end
+##DATARint = csvread("interval_inversion.csv")
+##% read results
+##ShotInt = DATARint (2:end, 1);
+##Rinnmid = DATARint (2:end, 2);
+##Rinnrad = DATARint (2:end, 3);
+##Routmid = DATARint (2:end, 4);
+##Routrad = DATARint (2:end, 5);
+##BtInt = DATARint (2:end, 6);
+##IpInt = DATARint (2:end, 7);
+##for ii = 1:length(ShotInt)
+##  BtIpInt(ii)=  BtInt (ii) / IpInt(ii);
+##end
+%
+%save DATARintINI Rinnmid Rinnrad Routmid Routrad BtIpInt
+%load DATARintINI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% /DATA INI %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+##[BtIpIntsorted, indBtIp] = sort(BtIpInt)
+##Rinnmidsorted = Rinnmid( indBtIp)
+##Rinnradsorted = Rinnrad( indBtIp)
+##Routmidsorted = Routmid( indBtIp)
+##Routradsorted = Routrad( indBtIp)
+%save DATARintINIsorted Rinnmidsorted Rinnradsorted Routmidsorted Routradsorted BtIpIntsorted
+
+%%%%%%%%%%%%%%%%%%%%%%%% SORTED by BtIpInt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+load DATARintINIsorted
+%
+##figure
+##hold on
+####plot(BtIpIntsorted, Rinnmidsorted)
+####plot(BtIpIntsorted, Routmidsorted)
+##errorbar(BtIpIntsorted, Rinnmidsorted, Rinnradsorted,"~.b");
+##errorbar(BtIpIntsorted, Routmidsorted, Routradsorted,"~.r");
+##%
+BtIpInt = BtIpIntsorted
+Rinnmid = Rinnmidsorted
+Rinnrad = Rinnradsorted
+Routmid = Routmidsorted
+Routrad = Routradsorted
+%%%%%%%%%%%%%%%%%%%%%%%% /SORTED by BtIpInt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 figure
 hold on
@@ -110,6 +139,9 @@ CorrectRestOUT
 xlim([0.0015 0.004])
 %%%%%%%%%%%%%%%%%%%%%%%  /ARRAYS OF RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % xxBtIp = [0.0018 0.0022 0.0024 0.0026 0.00275 0.00295 0.0032 0.0034 0.00355 0.00365 0.0039]
 for kk = 1: length(xxBtIp)-1
   meanW(kk) = (xxBtIp(kk) + xxBtIp(kk+1))/2

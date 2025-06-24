@@ -46,7 +46,7 @@ ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
-
+%
 tolneg0 = find(env0(:,2)<0)
 tolpos0 = find(env0(:,2)>=0)
 eqnumber0 = env0(:,1)

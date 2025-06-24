@@ -16,8 +16,8 @@
 %
 widadd = min(env0(tolpos0,2))
 envp = env0(tolpos0,2)
-step = 5
-widadd = envp(step)
+step = 1
+widadd = 0%envp(step)
 
 [eqnumber0sort, indeqnumber0sort] = sort(eqnumber0)
 eqtol0sort = eqtol0(indeqnumber0sort)
@@ -62,6 +62,7 @@ irp_steam = ir_problem(X0, Rinnmid, Rinnmid-infR, lb);
 %xlimits = [0.0019 0.0056];
 % Points to predict
 xpfuture = [0.004 0.0045 0.005]'
+x = x0;
 xp = [x; xpfuture]
 Xp = [xp.^0 xp];
 %ir_plotmodelset(irp_steam, xlimits)
@@ -85,3 +86,30 @@ figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%   /INN CORR    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+figure
+hold on
+
+pcolor = [0.7 0.9 0.7]
+lb = [-inf inf];                                # нижние границы beta1 и beta2
+irp_steam = ir_problem(X0, Rinnmid, Rinnmid-infR, lb);
+%xlimits = [0.0019 0.0056];
+% Points to predict
+xpfuture = [0.004 0.0045 0.005]'
+x = x0;
+xp = [x; xpfuture]
+Xp = [xp.^0 xp];
+%ir_plotmodelset(irp_steam, xlimits)
+yp = ir_predict(Xp, irp_steam)
+px = [ xp; xp(end:-1:1) ]
+py = [ yp(:, 1); yp(end:-1:1, 2) ]
+h2 =  patch(px,py,pcolor);
+
+
+errorbar(BtIpInt(tolpos0), Rinnmid(tolpos0), Rinnmid(tolpos0)-infR(tolpos0),"~.k");
+errorbar(BtIpInt(tolneg0), Rinnmid(tolneg0), Rinnmid(tolneg0)-infR(tolneg0),"~.b");
+p1p = plot(BtIpInt(tolpos0), Rinnmid(tolpos0) , 'sk')
+pn1 = plot(BtIpInt(tolneg0), Rinnmid(tolneg0) , 'or')
+p2 = plot(BtIpInt, ytol0C, 'sr')
+plot(BtIpInt, ytol0C, '-r')
+
+
