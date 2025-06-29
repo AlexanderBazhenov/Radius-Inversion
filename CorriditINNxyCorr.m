@@ -12,6 +12,13 @@ for ii=1:length(X0)
   ytol0(ii) = argmax0(1) + argmax0(2)*X0(ii, 2);
 end
 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tolneg0 = find(env0(:,2)<0)
+tolpos0 = find(env0(:,2)>=0)
+eqnumber0 = env0(:,1)
+eqtol0 = env0(:,2)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 figure
 hold on
 errorbar(BtIpInt, Rinnmid, Rinnrad,"~.b");
@@ -29,11 +36,10 @@ grid on
 titlestr = strcat('Rinv vs BtIp interval Inn argmax')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
-eqnumber0 = env0(:,1)
-eqtol0 = env0(:,2)
+
 figure
 hist(eqtol0, 30)
 set(gca, 'fontsize', 14)
@@ -44,14 +50,9 @@ grid on
 titlestr = strcat('Tol HIST Rinv Inn ')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
-%
-tolneg0 = find(env0(:,2)<0)
-tolpos0 = find(env0(:,2)>=0)
-eqnumber0 = env0(:,1)
-eqtol0 = env0(:,2)
-%
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
+
 figure
 hold on
 %p1 = plot(eqnumber0, eqtol0,'sk')
@@ -60,7 +61,7 @@ p2 = plot(eqnumber0(tolneg0), eqtol0(tolneg0),'sr')
  lgd12 = legend([p1 p2 ], ...
   {'Pos', 'Neg'})
   set(lgd12, 'fontsize', 14);
-    set(lgd12, 'location', 'northwest');
+ %   set(lgd12, 'location', 'northwest');
 set(gca, 'fontsize', 14)
 xlabel('Eq number')
 ylabel('Tol eq')
@@ -69,8 +70,8 @@ grid on
 titlestr = strcat('Tol Rinv INN ',  ' Pos Neg')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
- figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+## figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 figure
 hold on
@@ -82,7 +83,7 @@ p2 = plot(BtIpInt(eqnumber0(tolneg0)), eqtol0(tolneg0),'sr')
   set(lgd12, 'fontsize', 14);
 %    set(lgd12, 'location', 'northeast');
 set(gca, 'fontsize', 14)
-xlabel('Eq number')
+xlabel('Bt/Ip')
 ylabel('Tol eq')
 ##xlim([xxBtIp(1) xxBtIp(end)])
 grid on
@@ -90,8 +91,8 @@ grid on
 titlestr = strcat('Tol Rinv BtIp INN ',  ' Pos Neg')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%   /INN      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -102,6 +103,12 @@ for ii=1:length(X0)
   ytol1(ii) = argmax1(1) + argmax1(2)*X0(ii, 2);
 end
 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tolneg1 = find(env1(:,2)<0)
+tolpos1 = find(env1(:,2)>=0)
+eqnumber1 = env1(:,1)
+eqtol1 = env1(:,2)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure
 hold on
 errorbar(BtIpInt, Routmid, Routrad,"~.b");
@@ -111,7 +118,7 @@ plot(BtIpInt, ytol1, '-r')
  lgd12 = legend([p1 p2 ], ...
   {'Data OUT', 'argmaxtol'})
   set(lgd12, 'fontsize', 14);
-    set(lgd12, 'location', 'northeast');
+%    set(lgd12, 'location', 'northeast');
 set(gca, 'fontsize', 14)
 xlabel('Bt/Ip')
 ylabel('Rinv')
@@ -119,12 +126,9 @@ grid on
 titlestr = strcat('Rinv vs BtIp interval Out argmax')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
-
-eqnumber1 = env1(:,1)
-eqtol1 = env1(:,2)
 figure
 hist(eqtol1, 30)
 set(gca, 'fontsize', 14)
@@ -135,12 +139,10 @@ grid on
 titlestr = strcat('Tol HIST Rinv Out ')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
-tolneg1 = find(env1(:,2)<0)
-eqnumber1 = env1(:,1)
-eqtol1 = env1(:,2)
+
 %
 figure
 hold on
@@ -160,8 +162,8 @@ grid on
 titlestr = strcat('Tol Rinv OUT ',  ' Pos Neg')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 figure
 hold on
@@ -181,9 +183,34 @@ grid on
 titlestr = strcat('Tol Rinv BtIp OUT ',  ' Pos Neg')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   /OUT     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   INN+OUT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure
+hold on
+p1 = plot(BtIpInt(eqnumber0(tolpos0)), eqtol0(tolpos0),'<b')
+p2 = plot(BtIpInt(eqnumber0(tolneg0)), eqtol0(tolneg0),'ob')
+p3 = plot(BtIpInt(eqnumber1(tolpos1)), eqtol1(tolpos1),'>r')
+p4 = plot(BtIpInt(eqnumber1(tolneg1)), eqtol1(tolneg1),'sr')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMON
+ lgd1234 = legend([p1 p2 p3 p4], ...
+  {'Pos INN', 'Neg INN', 'Pos OUT', 'Neg OUT'})
+  set(lgd1234, 'fontsize', 14);
+%    set(lgd12, 'location', 'northeast');
+set(gca, 'fontsize', 14)
+xx = [0.0016 0.004]
+yy = [0 0]
+plot(xx, yy, '--k')
+xlabel('Bt/Ip')
+ylabel('Rinv')
+grid on
+titlestr = strcat('Tol Rinv BtIp INN OUT ',  ' Pos Neg')
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
 print('-dpng', '-r300', figure_name_out), pwd
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%     RSV   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -209,8 +236,8 @@ grid on
 titlestr = strcat('RSV INN-OUT BtIp')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
-figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+##figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 ylim([0 2.1])
 titlestr = strcat('RSV INN-OUT BtIp 2')

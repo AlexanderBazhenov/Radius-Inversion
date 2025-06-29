@@ -54,8 +54,8 @@ grid on
 titlestr = strcat('Rinv INN vs BtIp Pos')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
- figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+## figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure
 hold on
@@ -77,22 +77,26 @@ grid on
 titlestr = strcat('Rinv INN vs BtIp')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
- figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+## figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 
-figure
-hold on
-pcolor = [0.7 0.9 0.7]
+
 %xlimits = [0.0019 0.0056];
 % Points to predict
 xpfuture = [0.004 0.0045 0.005]'
+% 2025-06-29
+xpfuture = []
 xp = [x0; xpfuture]
 Xp = [xp.^0 xp];
 %ir_plotmodelset(irp_steam, xlimits)
 yp = ir_predict(Xp, irp_Rinv)
 px = [ xp; xp(end:-1:1) ]
 py = [ yp(:, 1); yp(end:-1:1, 2) ]
+
+figure
+hold on
+pcolor = [0.7 0.9 0.7]
 h2 =  patch(px,py,pcolor);
   xlim([0.0018 0.0039])
 %
@@ -112,35 +116,41 @@ grid on
 titlestr = strcat('Rinv INN vs BtIp Pos Predict')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
- figure_name_out=strcat(titlestr, '.png')
-print('-dpng', '-r300', figure_name_out), pwd
+## figure_name_out=strcat(titlestr, '.png')
+##print('-dpng', '-r300', figure_name_out), pwd
 
 
-figure
-hold on
-pcolor = [0.7 0.9 0.7]
-%xlimits = [0.0019 0.0056];
-% Points to predict
-xpfuture = [0.004 0.0045 0.005]'
-xp = [x0(tolpos0); xpfuture]
-Xp = [xp.^0 xp];
-%ir_plotmodelset(irp_steam, xlimits)
-yp = ir_predict(Xp, irp_Rinv)
-px = [ xp; xp(end:-1:1) ]
-py = [ yp(:, 1); yp(end:-1:1, 2) ]
-h2 =  patch(px,py,pcolor);
-  xlim([0.0018 0.0039])
-
+##figure
+##hold on
+##pcolor = [0.7 0.9 0.7]
+##%xlimits = [0.0019 0.0056];
+##% Points to predict
+##xpfuture = [0.004 0.0045 0.005]'
+##xp = [x0(tolpos0); xpfuture]
+##Xp = [xp.^0 xp];
+##%ir_plotmodelset(irp_steam, xlimits)
+##yp = ir_predict(Xp, irp_Rinv)
+##px = [ xp; xp(end:-1:1) ]
+##py = [ yp(:, 1); yp(end:-1:1, 2) ]
+##h2 =  patch(px,py,pcolor);
+##  xlim([0.0018 0.0039])
+clear  Yp, ypmid, yprad, yint
 % Forecast
 for ii = 1:length(tolpos0)
   Yp(ii) = infsup(yp(ii,1), yp(ii,2));
 end
-% Data Interval
-yint = infsup(Rinnmid(tolpos0)-Rinnrad(tolpos0), Rinnmid(tolpos0)+Rinnrad(tolpos0))
+% Model Interval all data
 for ii = 1:length(x0)
   ypmid(ii) = (yp(ii,1) + yp(ii,2))/2;
+  yprad(ii) = (-yp(ii,1) + yp(ii,2))/2;
 end
+% Data Interval @ tolpos0
+yint = infsup(Rinnmid(tolpos0)-Rinnrad(tolpos0), Rinnmid(tolpos0)+Rinnrad(tolpos0))
 
+figure
+hold on
+errorbar(x0(tolpos0),  ypmid(tolpos0),  yprad(tolpos0),"~.b")
+errorbar(x0(tolpos0),  Rinnmid(tolpos0),  Rinnrad(tolpos0),"~.r")
 
 ##for ii = 1:length(tolpos0)
 ##   [outinf, outsup]  = wedge(yint(ii), Yp(ii) );
@@ -151,16 +161,17 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%   BOUNDARY CHECK     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BoundaryCheck.m
-for ii = 1:length(tolpos0)
-   dif1 = abs(inf(yint(ii))-inf(Yp(ii)));
-   dif2 = abs(sup(yint(ii))-sup(Yp(ii)));
-   dif3 = abs(inf(yint(ii))-sup(Yp(ii)));
-   dif4 = abs(sup(yint(ii))-inf(Yp(ii)));
-   Dif = [dif1, dif2, dif3, dif4];
-   DifY(ii) = min(Dif);
-end
-[DifYzero, DifYzeroInd] = find(DifY< 0.0001)
+epstol = 0.02
+BoundaryCheck
+##for ii = 1:length(tolpos0)
+##   dif1 = abs(inf(yint(ii))-inf(Yp(ii)));
+##   dif2 = abs(sup(yint(ii))-sup(Yp(ii)));
+##   dif3 = abs(inf(yint(ii))-sup(Yp(ii)));
+##   dif4 = abs(sup(yint(ii))-inf(Yp(ii)));
+##   Dif = [dif1, dif2, dif3, dif4];
+##   DifY(ii) = min(Dif);
+##end
+##[DifYzero, DifYzeroInd] = find(DifY< 0.0001)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 figure

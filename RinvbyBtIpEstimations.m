@@ -92,7 +92,7 @@ p2 = plot(BtIpInt, Routmid, 'sr')
  lgd12 = legend([p1 p2 ], ...
   {'Inn', 'Out'})
   set(lgd12, 'fontsize', 14);
-    set(lgd12, 'location', 'northeast');
+%    set(lgd12, 'location', 'northeast');
 set(gca, 'fontsize', 14)
 xlabel('Bt/Ip')
 ylabel('Rinv')
@@ -104,19 +104,19 @@ set(ht, 'fontweight', 'normal')
 ##print('-dpng', '-r300', figure_name_out), pwd
 
 %figure
-hist(BtIpInt, 40)
+##hist(BtIpInt, 40)
+##%
+##xxBtIp = [0.0018 0.0022 0.0024 0.0026 0.00275 0.00295 0.0032 0.0034 0.00355 0.00365 0.0039]
+##for ii = 1 : length (xxBtIp)
+##  xx = [xxBtIp(ii) xxBtIp(ii)]
+##  yy = [0 60 ]
+##  plot(xx, yy, '--k')
+##end
 %
-xxBtIp = [0.0018 0.0022 0.0024 0.0026 0.00275 0.00295 0.0032 0.0034 0.00355 0.00365 0.0039]
-for ii = 1 : length (xxBtIp)
-  xx = [xxBtIp(ii) xxBtIp(ii)]
-  yy = [0 60 ]
-  plot(xx, yy, '--k')
-end
-%
-set(lgd12, 'location', 'east');
-titlestr = strcat('Rinv by BtIp interval Inn Out HIST')
-ht = title(titlestr)
-set(ht, 'fontweight', 'normal')
+##set(lgd12, 'location', 'east');
+##titlestr = strcat('Rinv by BtIp interval Inn Out HIST')
+##ht = title(titlestr)
+##set(ht, 'fontweight', 'normal')
 ##figure_name_out=strcat(titlestr, '.png')
 ##print('-dpng', '-r300', figure_name_out), pwd
 
