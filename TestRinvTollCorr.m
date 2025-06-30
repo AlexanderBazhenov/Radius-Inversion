@@ -63,25 +63,35 @@ end
 %
 figure
 hold on
-p1 = plot(x0(tolneg0),  Rinnmid(tolneg0), 'ok')
-errorbar(x0(tolneg0),  Rinnmid(tolneg0),  Rinnrad(tolneg0),"~.k")
-p2 = plot(x0, ytol0, '--k')
-%p1 = plot(eqnumber0, eqtol0,'sk')
-p3 = plot(x0(tolpos0),  Rinnmid(tolpos0),'sb')
-%p2 = plot(x0(tolneg0), Rinnmid(tolneg0),'sr')
-errorbar(x0(tolpos0),  Rinnmid(tolpos0),  Rinnrad(tolpos0),"~.b")
-%errorbar(x0(tolneg0), Rinnmid(tolneg0), Rinnrad(tolneg0), "~.r")
-p4 = plot(x0(tolpos0), ytolmaxpos, '--b')
- lgd1234 = legend([p1 p2 p3  p4], ...
-  {'Neg', 'arrmax all', 'Pos',  'argmax pos'})
-  set(lgd1234, 'fontsize', 14);
- %   set(lgd12, 'location', 'northwest');
-set(gca, 'fontsize', 14)
-ylabel('Rinv')
-xlabel('BtIp')
-##xlim([xxBtIp(1) xxBtIp(end)])
-grid on
+% Plot Pos Neg Data
+PlotPosNeg
+%
 titlestr = strcat('Rinv INN vs BtIp All Pos ROI count=', num2str(length(ROI)))
+ht = title(titlestr)
+set(ht, 'fontweight', 'normal')
+figure_name_out=strcat(titlestr, '.png')
+print('-dpng', '-r300', figure_name_out), pwd
+
+% Points to predict
+xpfuture = [0.004 0.0045 0.005]'
+% 2025-06-29
+xpfuture = []
+xp = [x0; xpfuture]
+Xp = [xp.^0 xp];
+%ir_plotmodelset(irp_steam, xlimits)
+yp = ir_predict(Xp, irp_Rinv)
+px = [ xp; xp(end:-1:1) ]
+py = [ yp(:, 1); yp(end:-1:1, 2) ]
+
+figure
+hold on
+pcolor = [0.7 0.9 0.7]
+h2 =  patch(px,py,pcolor);
+  xlim([0.0018 0.0039])
+% Plot Pos Neg Data
+PlotPosNeg
+%
+titlestr = strcat('Rinv INN vs BtIp All Pos ROI count=', num2str(length(ROI)), ' Forecast')
 ht = title(titlestr)
 set(ht, 'fontweight', 'normal')
 figure_name_out=strcat(titlestr, '.png')
