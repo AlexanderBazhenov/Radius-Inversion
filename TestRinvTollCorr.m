@@ -1,6 +1,7 @@
 % Test RinvTollCorr.m
 % 2025-06-30
 % INI
+ROI = []
 ROI = [1:4 67 75]
 ROI = [1:4 67 68 74 75]
 ROI = [1:4 50:55 67:75]
@@ -24,9 +25,9 @@ Rinnrad = Rinnrad(ROI)
 figure
 hold on
 errorbar(x0, Rinnmid, Rinnrad,"~.b");
-errorbar(x0, Routmid, Routrad,"~.r");
+%errorbar(x0, Routmid, Routrad,"~.r");
 p1 = plot(x0, Rinnmid, 'sb')
-p2 = plot(x0, Routmid, 'sr')
+%p2 = plot(x0, Routmid, 'sr')
 % 1st try
 X0 = [ x0.^0 x0 ];
 [tolmax0,argmax0, env0] = tolsolvty(X0,X0,Rinnmid-Rinnrad,Rinnmid+Rinnrad,1);
